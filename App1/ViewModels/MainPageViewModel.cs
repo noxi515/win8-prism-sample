@@ -1,26 +1,33 @@
-﻿using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.Mvvm;
+﻿using App1.Mvvm;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm.Interfaces;
 
 namespace App1.ViewModels
 {
-    public class MainPageViewModel : ViewModel
+    public class MainPageViewModel : NavigatableViewModelBase
     {
-        private INavigationService NavigationService { get; }
-
         private string _text;
         private DelegateCommand _command;
 
+        /// <summary>
+        /// テキストを取得または設定します。
+        /// </summary>
         public string Text
         {
             get { return _text; }
             set
             {
+                // Viewに対してプロパティに変更があったことを通知する。
                 SetProperty(ref _text, value);
+
+                // ボタンコマンドに対して、依存プロパティに変更があったことを通知する。
                 Command.RaiseCanExecuteChanged();
             }
         }
 
+        /// <summary>
+        /// ボタンコマンドを取得します。
+        /// </summary>
         public DelegateCommand Command
         {
             get
@@ -40,10 +47,9 @@ namespace App1.ViewModels
         }
 
         public MainPageViewModel(INavigationService navigationService)
+            : base(navigationService)
         {
-            NavigationService = navigationService;
+            PageTitle = "Main";
         }
-
-
     }
 }
